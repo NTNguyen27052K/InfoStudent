@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.container {
+  max-width: 1000px;
+}
+
+table {
+  border-collapse: collapse;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+th,
+td {
+  padding: 1em;
+  background: rgb(49 55 61);
+  border-bottom: 2px solid white;
+}

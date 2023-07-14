@@ -8,4 +8,8 @@ import { Provider } from "react-redux";
 import { store } from "./Redux/configStore";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<App />);
+root.render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+);

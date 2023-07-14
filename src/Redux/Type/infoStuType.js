@@ -1,0 +1,4 @@
+export const ADD_TO_LISTSTU = "ADD_TO_LISTSTU";
+export const DELETE_TO_LISTSTU = "DELETE_TO_LISTSTU";
+export const EDIT_TO_LISTSTU = "EDIT_TO_LISTSTU";
+export const FIND_TO_LISTSTU = "FIND_TO_LISTSTU";
