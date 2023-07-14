@@ -74,7 +74,6 @@ class FormInfo extends Component {
         </div>
         <button
           className="btn btn-dark"
-          disabled
           onClick={() => {
             console.log(this.state);
             this.props.dispatch(addStuToListAction(this.state));
