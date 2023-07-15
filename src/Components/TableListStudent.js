@@ -18,10 +18,10 @@ class TableListStudent extends Component {
                 this.props.dispatch(deleteStuToListAction(item));
               }}
             >
-              <i class="fa-solid fa-trash"></i>
+              <i className="fa-solid fa-trash"></i>
             </button>
-            <button className="btn btn-dark">
-              <i class="fa-solid fa-pen"></i>
+            <button className="btn btn-dark" onClick={() => {}}>
+              <i className="fa-solid fa-pen"></i>
             </button>
           </td>
         </tr>
@@ -29,7 +29,7 @@ class TableListStudent extends Component {
     });
   };
   render() {
-    console.log(this.props.listInfoStu.arrListStu.phoneNunbers);
+    // console.log(this.props.listInfoStu.arrListStu.phoneNunbers);
     return (
       <table
         className="container text-white mb-3"

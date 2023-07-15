@@ -1,4 +1,8 @@
-import { ADD_TO_LISTSTU, DELETE_TO_LISTSTU } from "../Type/infoStuType";
+import {
+  ADD_TO_LISTSTU,
+  DELETE_TO_LISTSTU,
+  EDIT_TO_LISTSTU,
+} from "../Type/infoStuType";
 
 const initialState = {
   arrListStu: [],
@@ -23,7 +27,20 @@ export const infoStuReducer = (state = initialState, action) => {
       );
 
       const newArrListStu = [...state.arrListStu];
-      console.log(index);
+
+      if (index !== -1) {
+        newArrListStu.splice(index, 1);
+      }
+
+      return { ...state, arrListStu: newArrListStu };
+    }
+    case EDIT_TO_LISTSTU: {
+      const index = state.arrListStu.findIndex(
+        (item) => item.maSV === action.payload.maSV
+      );
+
+      const newArrListStu = [...state.arrListStu];
+
       if (index !== -1) {
         newArrListStu.splice(index, 1);
       }
