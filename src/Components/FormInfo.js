@@ -29,10 +29,9 @@ class FormInfo extends Component {
     let { id, value } = event.target;
 
     let newState = this.state;
+    newState.value[id] = value;
 
     let type = event.target.getAttribute("data-type");
-
-    newState.value[id] = value;
 
     if (newState.value[id] === "") {
       newState.errClass[id] = "is-invalid";
@@ -194,7 +193,7 @@ class FormInfo extends Component {
             type="submit"
             onClick={() => {
               console.log(this.state);
-              this.props.dispatch(addStuToListAction(this.state.errors.value));
+              this.props.dispatch(addStuToListAction(this.state.value));
             }}
           >
             Thêm sinh viên
