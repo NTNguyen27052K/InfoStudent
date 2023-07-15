@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { addStuToListAction } from "../Redux/Action/infoStuAction";
+import {
+  addStuToListAction,
+  editStuToListAction,
+  findStuToListAction,
+} from "../Redux/Action/infoStuAction";
 
 class FormInfo extends Component {
   state = {
@@ -23,7 +27,7 @@ class FormInfo extends Component {
       email: "",
     },
     // errClass: "is-invalid",
-    activeBTN: false,
+    activeBTN: true,
   };
   getValueInput = (event) => {
     let { id, value } = event.target;
@@ -35,6 +39,7 @@ class FormInfo extends Component {
 
     if (newState.value[id] === "") {
       newState.errClass[id] = "is-invalid";
+
       newState.errors[id] =
         id === "maSV"
           ? "Mã sinh viên không được để trống"
@@ -44,7 +49,7 @@ class FormInfo extends Component {
           ? "Số điện thoại sinh viên không được để trống"
           : "Email sinh viên không được để trống";
     } else {
-      newState.errClass[id] = "";
+      newState.errClass[id] = "is-valid";
       newState.errors[id] = "";
 
       let regexNotSpace = /^\S*$/;
@@ -87,7 +92,7 @@ class FormInfo extends Component {
               newState.errClass[id] = "is-invalid";
               newState.errors[id] = " Email syntax error!";
             } else {
-              newState.errClass[id] = "";
+              newState.errClass[id] = "is-valid";
               newState.errors[id] = "";
             }
           }
@@ -100,7 +105,7 @@ class FormInfo extends Component {
               newState.errClass[id] = "is-invalid";
               newState.errors[id] = "Phone number syntax error!";
             } else {
-              newState.errClass[id] = "";
+              newState.errClass[id] = "is-valid";
               newState.errors[id] = "";
             }
           }
@@ -111,19 +116,33 @@ class FormInfo extends Component {
       }
     }
 
+    let valid = false;
+    for (const item in this.state.value) {
+      if (this.state.errors[item] !== "" || this.state.value[item] === "") {
+        valid = true;
+      }
+    }
+
+    // console.log(valid);
     this.setState({
       value: newState.value,
       errors: newState.errors,
       errClass: newState.errClass,
+      activeBTN: valid,
     });
+  };
+  getValueSearch = (event) => {
+    let { value } = event.target;
+    console.log(value);
   };
   handleSubmit = (event) => {
     event.preventDefault();
-    console.log(this.state);
+    this.props.dispatch(addStuToListAction(this.state.value));
   };
   render() {
+    console.log(this.props.listInfoStuFind);
     let { maSV, hoTen, phoneNunbers, email } = this.state.errors;
-    console.log(this.state);
+    // console.log(this.state);
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="my-3">
@@ -137,6 +156,7 @@ class FormInfo extends Component {
                   id="maSV"
                   data-type="maSV"
                   onChange={this.getValueInput}
+                  // value={this.props.listInfoStuFind.maSV}
                 />
                 <label htmlFor="floatingInput">Mã sinh viên</label>
                 <div className="invalid-feedback">{maSV}</div>
@@ -151,6 +171,7 @@ class FormInfo extends Component {
                   id="hoTen"
                   data-type="hoTen"
                   onChange={this.getValueInput}
+                  // value={this.props.listInfoStuFind.hoTen}
                 />
                 <label htmlFor="floatingInput">Họ tên</label>
                 <div className="invalid-feedback">{hoTen}</div>
@@ -167,6 +188,7 @@ class FormInfo extends Component {
                   id="phoneNunbers"
                   data-type="phoneNunbers"
                   onChange={this.getValueInput}
+                  // value={this.props.listInfoStuFind.phoneNunbers}
                 />
                 <label htmlFor="floatingInput">Số điện thoại</label>
                 <div className="invalid-feedback">{phoneNunbers}</div>
@@ -181,6 +203,7 @@ class FormInfo extends Component {
                   id="email"
                   data-type="email"
                   onChange={this.getValueInput}
+                  // value={this.props.listInfoStuFind.email}
                 />
                 <label htmlFor="floatingInput">Email</label>
                 <div className="invalid-feedback">{email}</div>
@@ -188,23 +211,41 @@ class FormInfo extends Component {
             </div>
           </div>
           <button
-            className="btn btn-dark"
+            className="btn btn-dark mb-3"
             disabled={this.state.activeBTN}
             type="submit"
-            onClick={() => {
-              console.log(this.state);
-              this.props.dispatch(addStuToListAction(this.state.value));
-            }}
+            hidden={false}
           >
             Thêm sinh viên
           </button>
+          <button
+            className="btn btn-dark mb-3"
+            // disabled={this.state.activeBTN}
+            // type="submit"
+            // hidden={false}
+            onClick={() => {
+              this.props.dispatch(editStuToListAction(this.state.value));
+            }}
+          >
+            Cập nhật
+          </button>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Search..."
+            onChange={(event) => {
+              this.props.dispatch(findStuToListAction(event.target.value));
+            }}
+          />
         </div>
       </form>
     );
   }
 }
 
-const Reduxcomponent = connect()(FormInfo);
-
-export default Reduxcomponent;
-//
+const mapStateToProps = (state) => {
+  return {
+    listInfoStuFind: state.infoStu.arrListStuFind,
+  };
+};
+export default connect(mapStateToProps)(FormInfo);

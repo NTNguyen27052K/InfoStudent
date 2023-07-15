@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { deleteStuToListAction } from "../Redux/Action/infoStuAction";
+import {
+  deleteStuToListAction,
+  findStuToListAction,
+} from "../Redux/Action/infoStuAction";
 
 class TableListStudent extends Component {
   renderListStu = (listInfoStu) => {
@@ -20,7 +23,12 @@ class TableListStudent extends Component {
             >
               <i className="fa-solid fa-trash"></i>
             </button>
-            <button className="btn btn-dark" onClick={() => {}}>
+            <button
+              className="btn btn-dark"
+              onClick={() => {
+                this.props.dispatch(findStuToListAction(item.maSV));
+              }}
+            >
               <i className="fa-solid fa-pen"></i>
             </button>
           </td>
@@ -29,7 +37,6 @@ class TableListStudent extends Component {
     });
   };
   render() {
-    // console.log(this.props.listInfoStu.arrListStu.phoneNunbers);
     return (
       <table
         className="container text-white mb-3"
@@ -44,7 +51,7 @@ class TableListStudent extends Component {
             <th>Action</th>
           </tr>
         </thead>
-        <tbody>{this.renderListStu(this.props.listInfoStu.arrListStu)}</tbody>
+        <tbody>{this.renderListStu(this.props.listInfoStu)}</tbody>
       </table>
     );
   }
@@ -52,7 +59,8 @@ class TableListStudent extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    listInfoStu: state.infoStu,
+    listInfoStu: state.infoStu.arrListStu,
+    listInfoStuFind: state.infoStu.arrListStuFind,
   };
 };
 
