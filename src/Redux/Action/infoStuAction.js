@@ -3,6 +3,7 @@ import {
   DELETE_TO_LISTSTU,
   EDIT_TO_LISTSTU,
   FIND_TO_LISTSTU,
+  SEARCH_TO_LISTSTU,
 } from "../Type/infoStuType";
 
 export const addStuToListAction = (item) => {
@@ -26,6 +27,12 @@ export const editStuToListAction = (item) => {
 export const findStuToListAction = (item) => {
   return {
     type: FIND_TO_LISTSTU,
+    payload: item,
+  };
+};
+export const searchStuToListAction = (item) => {
+  return {
+    type: SEARCH_TO_LISTSTU,
     payload: item,
   };
 };

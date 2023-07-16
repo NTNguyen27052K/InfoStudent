@@ -9,9 +9,9 @@ class TableListStudent extends Component {
   state = {
     arrStudent: [],
   };
-  setState = {};
-  renderListStu = () => {
-    return this.state.arrStudent.map((item, index) => {
+
+  renderListStu = (listStu) => {
+    return listStu.map((item, index) => {
       return (
         <tr className="text-center" key={index}>
           <td>{item.maSV}</td>
@@ -44,9 +44,21 @@ class TableListStudent extends Component {
       );
     });
   };
-
+  renderListStuForAction = () => {
+    if (this.props.listInfoStu.infoStu.actionStu === "addStu") {
+      return this.renderListStu(this.props.listInfoStu.infoStu.arrListStu);
+    }
+    if (this.props.listInfoStu.infoStu.actionStu === "findStu") {
+      return this.renderListStu(this.props.listInfoStu.infoStu.arrListStuFind);
+    }
+    if (this.props.listInfoStu.infoStu.actionStu === "") {
+      // this.props.dispatch(actionStu : "findStu");
+      return this.renderListStu(this.props.listInfoStu.infoStu.arrListStu);
+    }
+  };
   render() {
-    console.log(this.state);
+    // console.log(this.state);
+    // console.log(this.props.listInfoStu.infoStu.actionStu);
     return (
       <table
         className="container text-white mb-3"
@@ -61,16 +73,18 @@ class TableListStudent extends Component {
             <th>Action</th>
           </tr>
         </thead>
-        <tbody>{this.renderListStu()}</tbody>
+        <tbody>{this.renderListStuForAction()}</tbody>
       </table>
     );
   }
 }
 
 const mapStateToProps = (state) => {
+  // .infoStu.arrListStu, .infoStu.arrListStuFind
+  // listInfoStuFind: state,
+  //   addStu: state.infoStu.addStu,
   return {
-    listInfoStu: state.infoStu.arrListStu,
-    listInfoStuFind: state.infoStu.arrListStuFind,
+    listInfoStu: state,
   };
 };
 

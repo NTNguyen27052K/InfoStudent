@@ -4,6 +4,7 @@ import {
   addStuToListAction,
   editStuToListAction,
   findStuToListAction,
+  searchStuToListAction,
 } from "../Redux/Action/infoStuAction";
 
 class FormInfo extends Component {
@@ -140,7 +141,8 @@ class FormInfo extends Component {
     this.props.dispatch(addStuToListAction(this.state.value));
   };
   render() {
-    console.log(this.props.listInfoStuFind);
+    // console.log(this.props.listInfoStuFind);
+
     let { maSV, hoTen, phoneNunbers, email } = this.state.errors;
     // console.log(this.state);
     return (
@@ -235,6 +237,7 @@ class FormInfo extends Component {
             placeholder="Search..."
             onChange={(event) => {
               this.props.dispatch(findStuToListAction(event.target.value));
+              this.props.dispatch(searchStuToListAction(event.target.value));
             }}
           />
         </div>
