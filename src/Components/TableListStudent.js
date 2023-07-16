@@ -6,8 +6,12 @@ import {
 } from "../Redux/Action/infoStuAction";
 
 class TableListStudent extends Component {
-  renderListStu = (listInfoStu) => {
-    return listInfoStu.map((item, index) => {
+  state = {
+    arrStudent: [],
+  };
+  setState = {};
+  renderListStu = () => {
+    return this.state.arrStudent.map((item, index) => {
       return (
         <tr className="text-center" key={index}>
           <td>{item.maSV}</td>
@@ -15,10 +19,14 @@ class TableListStudent extends Component {
           <td>{item.phoneNunbers}</td>
           <td>{item.email}</td>
           <td>
+            {/* this.props.dispatch(deleteStuToListAction(item)); */}
             <button
               className="btn btn-dark me-2"
               onClick={() => {
                 this.props.dispatch(deleteStuToListAction(item));
+                // this.setState({
+                //   ...this.state,
+                // });
               }}
             >
               <i className="fa-solid fa-trash"></i>
@@ -36,7 +44,9 @@ class TableListStudent extends Component {
       );
     });
   };
+
   render() {
+    console.log(this.state);
     return (
       <table
         className="container text-white mb-3"
@@ -51,7 +61,7 @@ class TableListStudent extends Component {
             <th>Action</th>
           </tr>
         </thead>
-        <tbody>{this.renderListStu(this.props.listInfoStu)}</tbody>
+        <tbody>{this.renderListStu()}</tbody>
       </table>
     );
   }
@@ -65,3 +75,34 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(TableListStudent);
+
+// renderListStu = (listInfoStu) => {
+//   return listInfoStu.map((item, index) => {
+//     return (
+//       <tr className="text-center" key={index}>
+//         <td>{item.maSV}</td>
+//         <td>{item.hoTen}</td>
+//         <td>{item.phoneNunbers}</td>
+//         <td>{item.email}</td>
+//         <td>
+//           <button
+//             className="btn btn-dark me-2"
+//             onClick={() => {
+//               this.props.dispatch(deleteStuToListAction(item));
+//             }}
+//           >
+//             <i className="fa-solid fa-trash"></i>
+//           </button>
+//           <button
+//             className="btn btn-dark"
+//             onClick={() => {
+//               this.props.dispatch(findStuToListAction(item.maSV));
+//             }}
+//           >
+//             <i className="fa-solid fa-pen"></i>
+//           </button>
+//         </td>
+//       </tr>
+//     );
+//   });
+// };
