@@ -3,6 +3,7 @@ import {
   DELETE_TO_LISTSTU,
   EDIT_TO_LISTSTU,
   FIND_TO_LISTSTU,
+  READ_ONLY,
   SEARCH_TO_LISTSTU,
 } from "../Type/infoStuType";
 
@@ -10,6 +11,7 @@ const initialState = {
   arrListStu: [],
   arrListStuFind: [],
   actionStu: "",
+  readOnly: false,
 };
 export const infoStuReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -59,24 +61,52 @@ export const infoStuReducer = (state = initialState, action) => {
       };
     }
     case EDIT_TO_LISTSTU: {
-      const index = state.arrListStu.findIndex(
-        (item) => item.maSV === action.payload.maSV
-      );
-
-      const newArrListStu = [...state.arrListStu];
-      newArrListStu[index] = action.payload;
-
-      return { ...state, arrListStu: newArrListStu };
+      if (action.payload.action == "findStuEdit") {
+        console.log("findStuEdit");
+        const objStu = state.arrListStu.filter(
+          (item) => item.maSV === action.payload.value.maSV
+        );
+        console.log(objStu);
+        return {
+          ...state,
+          arrListStuFind: objStu,
+          actionStu: "editStu",
+        };
+      }
+      if (action.payload.action == "editStu") {
+        const index = state.arrListStu.findIndex(
+          (item) => item.maSV === action.payload.value.maSV
+        );
+        console.log(action.payload.value);
+        console.log(index);
+        const newArrListStu = [...state.arrListStu];
+        console.log(newArrListStu[1]);
+        newArrListStu[index] = action.payload.value;
+        return {
+          ...state,
+          arrListStu: newArrListStu,
+          actionStu: "editStu",
+        };
+      }
     }
     case SEARCH_TO_LISTSTU: {
       let newActionStu = state.actionStu;
-      console.log(action.payload);
+
       if (action.payload === "") {
         newActionStu = "";
       }
       return {
         ...state,
         actionStu: newActionStu,
+      };
+    }
+    case READ_ONLY: {
+      let newReadOnly = state.readOnly;
+      newReadOnly = action.payload;
+
+      return {
+        ...state,
+        readOnly: newReadOnly,
       };
     }
     default:

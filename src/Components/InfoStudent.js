@@ -13,7 +13,7 @@ export default class InfoStudent extends Component {
           Thông tin sinh viên bài em chưa xong đừng chấm nha!
         </h1>
         <FormInfo />
-        <TableListStudent />
+        {/* <TableListStudent /> */}
       </div>
     );
   }

@@ -3,6 +3,7 @@ import {
   DELETE_TO_LISTSTU,
   EDIT_TO_LISTSTU,
   FIND_TO_LISTSTU,
+  READ_ONLY,
   SEARCH_TO_LISTSTU,
 } from "../Type/infoStuType";
 
@@ -33,6 +34,12 @@ export const findStuToListAction = (item) => {
 export const searchStuToListAction = (item) => {
   return {
     type: SEARCH_TO_LISTSTU,
+    payload: item,
+  };
+};
+export const readOnly = (item) => {
+  return {
+    type: READ_ONLY,
     payload: item,
   };
 };

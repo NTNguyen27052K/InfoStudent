@@ -1,11 +1,13 @@
-import React, { Component } from "react";
+import React, { Component, createRef, useRef } from "react";
 import { connect } from "react-redux";
 import {
   addStuToListAction,
   editStuToListAction,
   findStuToListAction,
+  readOnly,
   searchStuToListAction,
 } from "../Redux/Action/infoStuAction";
+import TableListStudent from "./TableListStudent";
 
 class FormInfo extends Component {
   state = {
@@ -27,8 +29,11 @@ class FormInfo extends Component {
       phoneNunbers: "",
       email: "",
     },
-    // errClass: "is-invalid",
+
     activeBTN: true,
+
+    btnUpdate: true,
+    btnAdd: false,
   };
   getValueInput = (event) => {
     let { id, value } = event.target;
@@ -132,123 +137,175 @@ class FormInfo extends Component {
       activeBTN: valid,
     });
   };
-  getValueSearch = (event) => {
-    let { value } = event.target;
-    console.log(value);
-  };
+
   handleSubmit = (event) => {
     event.preventDefault();
     this.props.dispatch(addStuToListAction(this.state.value));
+    this.setState({
+      ...this.state,
+      value: {
+        maSV: "",
+        hoTen: "",
+        phoneNunbers: "",
+        email: "",
+      },
+    });
+  };
+  // maSV, hoTen, phoneNunbers, email
+  setValueInput = (maSV, hoTen, phoneNunbers, email, btnUpdate, btnAdd) => {
+    this.setState({
+      ...this.state,
+      value: {
+        maSV: maSV,
+        hoTen: hoTen,
+        phoneNunbers: phoneNunbers,
+        email: email,
+      },
+      btnUpdate,
+      btnAdd,
+    });
   };
   render() {
-    // console.log(this.props.listInfoStuFind);
-
     let { maSV, hoTen, phoneNunbers, email } = this.state.errors;
-    // console.log(this.state);
+    console.log(this.state);
+
     return (
-      <form onSubmit={this.handleSubmit}>
-        <div className="my-3">
-          <div className="row mb-3">
-            <div className="col-6">
-              <div className="form-floating mb-3">
-                <input
-                  type="text"
-                  className={`form-control ${this.state.errClass.maSV}`}
-                  placeholder="Mã sinh viên"
-                  id="maSV"
-                  data-type="maSV"
-                  onChange={this.getValueInput}
-                  // value={this.props.listInfoStuFind.maSV}
-                />
-                <label htmlFor="floatingInput">Mã sinh viên</label>
-                <div className="invalid-feedback">{maSV}</div>
+      <div>
+        <form onSubmit={this.handleSubmit}>
+          <div className="my-3">
+            <div className="row mb-3">
+              <div className="col-6">
+                <div className="form-floating mb-3">
+                  <input
+                    type="text"
+                    className={`form-control ${this.state.errClass.maSV}`}
+                    placeholder="Mã sinh viên"
+                    id="maSV"
+                    data-type="maSV"
+                    readOnly={this.props.listInfoStu.infoStu.readOnly}
+                    onChange={this.getValueInput}
+                    value={this.state.value.maSV}
+                  />
+                  <label htmlFor="floatingInput">Mã sinh viên</label>
+                  <div className="invalid-feedback">{maSV}</div>
+                </div>
+              </div>
+              <div className="col-6">
+                <div className="form-floating mb-3">
+                  <input
+                    type="text"
+                    className={`form-control ${this.state.errClass.hoTen}`}
+                    placeholder="Họ tên"
+                    id="hoTen"
+                    data-type="hoTen"
+                    onChange={this.getValueInput}
+                    value={this.state.value.hoTen}
+                  />
+                  <label htmlFor="floatingInput">Họ tên</label>
+                  <div className="invalid-feedback">{hoTen}</div>
+                </div>
               </div>
             </div>
-            <div className="col-6">
-              <div className="form-floating mb-3">
-                <input
-                  type="text"
-                  className={`form-control ${this.state.errClass.hoTen}`}
-                  placeholder="Họ tên"
-                  id="hoTen"
-                  data-type="hoTen"
-                  onChange={this.getValueInput}
-                  // value={this.props.listInfoStuFind.hoTen}
-                />
-                <label htmlFor="floatingInput">Họ tên</label>
-                <div className="invalid-feedback">{hoTen}</div>
+            <div className="row">
+              <div className="col-6">
+                <div className="form-floating mb-3">
+                  <input
+                    type="text"
+                    className={`form-control ${this.state.errClass.phoneNunbers}`}
+                    placeholder="Số điện thoại"
+                    id="phoneNunbers"
+                    data-type="phoneNunbers"
+                    onChange={this.getValueInput}
+                    value={this.state.value.phoneNunbers}
+                  />
+                  <label htmlFor="floatingInput">Số điện thoại</label>
+                  <div className="invalid-feedback">{phoneNunbers}</div>
+                </div>
+              </div>
+              <div className="col-6">
+                <div className="form-floating mb-3">
+                  <input
+                    type="text"
+                    className={`form-control ${this.state.errClass.email}`}
+                    placeholder="Email"
+                    id="email"
+                    data-type="email"
+                    onChange={this.getValueInput}
+                    value={this.state.value.email}
+                  />
+                  <label htmlFor="floatingInput">Email</label>
+                  <div className="invalid-feedback">{email}</div>
+                </div>
               </div>
             </div>
+            <button
+              className="btn btn-dark mb-3 me-3"
+              disabled={this.state.activeBTN}
+              type="submit"
+              hidden={this.state.btnAdd}
+            >
+              Thêm sinh viên
+            </button>
+            <button
+              className="btn btn-dark mb-3"
+              // disabled={this.state.activeBTN}
+              // type="submit"
+              hidden={this.state.btnUpdate}
+              type="button"
+              onClick={() => {
+                // this.state.value
+                this.props.dispatch(
+                  editStuToListAction({
+                    value: this.state.value,
+                    action: "editStu",
+                  })
+                );
+                this.setState({
+                  ...this.state,
+                  value: {
+                    maSV: "",
+                    hoTen: "",
+                    phoneNunbers: "",
+                    email: "",
+                  },
+                  btnUpdate: true,
+                  btnAdd: false,
+                });
+                this.props.dispatch(readOnly(false));
+              }}
+            >
+              Cập nhật
+            </button>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Search..."
+              onChange={(event) => {
+                this.props.dispatch(findStuToListAction(event.target.value));
+                this.props.dispatch(searchStuToListAction(event.target.value));
+              }}
+            />
           </div>
-          <div className="row">
-            <div className="col-6">
-              <div className="form-floating mb-3">
-                <input
-                  type="text"
-                  className={`form-control ${this.state.errClass.phoneNunbers}`}
-                  placeholder="Số điện thoại"
-                  id="phoneNunbers"
-                  data-type="phoneNunbers"
-                  onChange={this.getValueInput}
-                  // value={this.props.listInfoStuFind.phoneNunbers}
-                />
-                <label htmlFor="floatingInput">Số điện thoại</label>
-                <div className="invalid-feedback">{phoneNunbers}</div>
-              </div>
-            </div>
-            <div className="col-6">
-              <div className="form-floating mb-3">
-                <input
-                  type="text"
-                  className={`form-control ${this.state.errClass.email}`}
-                  placeholder="Email"
-                  id="email"
-                  data-type="email"
-                  onChange={this.getValueInput}
-                  // value={this.props.listInfoStuFind.email}
-                />
-                <label htmlFor="floatingInput">Email</label>
-                <div className="invalid-feedback">{email}</div>
-              </div>
-            </div>
-          </div>
-          <button
-            className="btn btn-dark mb-3"
-            disabled={this.state.activeBTN}
-            type="submit"
-            hidden={false}
-          >
-            Thêm sinh viên
-          </button>
-          <button
-            className="btn btn-dark mb-3"
-            // disabled={this.state.activeBTN}
-            // type="submit"
-            // hidden={false}
-            onClick={() => {
-              this.props.dispatch(editStuToListAction(this.state.value));
-            }}
-          >
-            Cập nhật
-          </button>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Search..."
-            onChange={(event) => {
-              this.props.dispatch(findStuToListAction(event.target.value));
-              this.props.dispatch(searchStuToListAction(event.target.value));
-            }}
-          />
-        </div>
-      </form>
+        </form>{" "}
+        <TableListStudent setValueInput={this.setValueInput} ref={this.ref} />
+      </div>
     );
   }
 }
 
+// const mapStateToProps = (state) => {
+//   return {
+//     listInfoStu: state,
+//   };
+// };
+// export default connect(mapStateToProps)(FormInfo);
 const mapStateToProps = (state) => {
+  // .infoStu.arrListStu, .infoStu.arrListStuFind
+  // listInfoStuFind: state,
+  //   addStu: state.infoStu.addStu,
   return {
-    listInfoStuFind: state.infoStu.arrListStuFind,
+    listInfoStu: state,
   };
 };
+
 export default connect(mapStateToProps)(FormInfo);

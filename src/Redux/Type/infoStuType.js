@@ -3,3 +3,4 @@ export const DELETE_TO_LISTSTU = "DELETE_TO_LISTSTU";
 export const EDIT_TO_LISTSTU = "EDIT_TO_LISTSTU";
 export const FIND_TO_LISTSTU = "FIND_TO_LISTSTU";
 export const SEARCH_TO_LISTSTU = "SEARCH_TO_LISTSTU";
+export const READ_ONLY = "READ_ONLY";
